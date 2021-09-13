@@ -4,6 +4,7 @@ import com.gdn.training.Blibli_Future_Kafka_Redis_Demo.service.BookListenerServi
 import com.gdn.training.Blibli_Future_Kafka_Redis_Demo.service.BookService;
 import com.gdn.training.Blibli_Future_Kafka_Redis_Demo.web.model.book.CreateBookRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 
@@ -21,7 +22,10 @@ public class BookListenerServiceImpl implements BookListenerService {
   }
 
   @Override
+  @KafkaListener(topics = BOOK_TOPIC, groupId = GROUP_ID,
+      containerFactory = "KafkaListenerContainerFactory")
   public void onEventConsumed(CreateBookRequest createBookRequest) {
-
+    log.info(" ######### Subscribe Message ====== {}", createBookRequest);
+    bookService.create(createBookRequest);
   }
 }

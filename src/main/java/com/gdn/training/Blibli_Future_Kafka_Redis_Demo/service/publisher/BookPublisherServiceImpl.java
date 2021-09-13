@@ -20,6 +20,7 @@ public class BookPublisherServiceImpl implements BookPublisherService {
 
   @Override
   public void sendMessage(CreateBookRequest createBookRequest) {
-
+    log.info(" ######### Publish Message ====== {}", createBookRequest);
+    this.kafkaTemplate.send(BOOK_TOPIC, createBookRequest);
   }
 }
